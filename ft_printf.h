@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmittie <lmittie@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmallist <fmallist@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 19:00:04 by fmallist          #+#    #+#             */
-/*   Updated: 2019/11/03 20:43:19 by lmittie          ###   ########.fr       */
+/*   Updated: 2019/11/13 15:47:00 by fmallist         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 /*-----------FLAGS---------------*/
 
-# define MINUS				1
+# define MINUS				(1 << 0)
 # define PLUS				(1 << 1)
 # define ZERO				(1 << 2)
 # define SPACE				(1 << 3)
@@ -47,11 +47,12 @@
 # define OCTAL				8
 # define UNSIGNED			(1 << 7)
 # define HEX				16
-# define BIG_HEX			(1 << 8)
+# define BIG_HEX			17
 
 # define MAX_LENGTH			4096
 
-typedef long long t_ll;
+typedef long long			t_ll;
+typedef unsigned long long	t_ull;
 
 typedef struct	s_printf
 {
@@ -70,12 +71,23 @@ void			get_width(t_printf *data, const char **format);
 void			get_precision(t_printf *data, const char **format);
 void			get_flags(t_printf *data, const char **format);
 void			get_size(t_printf *data, const char **format);
+
 int				ft_printf(const char *format, ...);
 void			push_buffer(t_printf *data);
-void			fill_options(t_printf *data, const char **format);
+int				fill_options(t_printf *data, const char **format);
 int				handle_overflow_buffer(t_printf *data, size_t len);
-void			itoa_base_buff(t_ll value, unsigned base, t_printf *data);
-void			error(unsigned id);
 void			get_integer(t_printf *data, long long *n);
+void			handle_integers(t_printf *data);
+
+void			itoa_base_buff(t_ll value, unsigned base, t_printf *data);
+char			neg_value(t_ll value, unsigned base, t_printf *data);
+char			pos_value(t_ll value, unsigned base, t_printf *data);
+char			result(t_ll value, unsigned base, t_printf *data);
+t_ll			new_value(t_ll value, unsigned *base, t_ll *val, t_printf *data);
+
+void			itoa_base_buff_u(t_ull value, t_printf *data);
+void			get_unsigned(t_printf *data, t_ull *n);
+size_t			ft_numlen_u(t_ull val);
+void			handle_unsigned(t_printf *data);
 
 #endif

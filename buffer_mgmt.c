@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buffer_mgmt.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmittie <lmittie@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmallist <fmallist@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 15:30:35 by fmallist          #+#    #+#             */
-/*   Updated: 2019/11/05 13:59:11 by lmittie          ###   ########.fr       */
+/*   Updated: 2019/11/12 21:39:52 by fmallist         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,50 +27,44 @@ void			handle_pointers(t_printf *data)
 		itoa_base_buff(n, 16, data);
 }
 
+void			string_spaces(t_printf *data, char *str)
+{
+	t_ll	what_bigger;
+	int		pr_or_wid;
+
+	what_bigger = ((t_ll)data->precision < (t_ll)ft_strlen(str)
+	&& data->precision != 0 && data->precision != -1)
+	? data->precision : (t_ll)ft_strlen(str);
+	pr_or_wid = (data->precision > data->width) ? data->precision : 0;
+	while ((data->width-- - ((*str == '\0' && (data->precision != 0
+	|| data->precision != -1)) ? 0 : what_bigger + pr_or_wid)) > 0)
+		data->buff[data->length++] = 32;
+}
+
 void			handle_strings(t_printf *data)
 {
-	char *str;
+	char	*str;
 
 	if ((str = (char *)va_arg(data->ap, char*)) == NULL)
+		str = "(null)";
+	if (data->precision == -1)
+		str = "";
+	if (data->flag & MINUS && *str != '\0' && data->precision != -1)
 	{
-		if (data->flag & MINUS)
-		{
-			if (!data->precision)
-				ft_strcpy(&data->buff[data->length], "(null)");
-			else
-				ft_strncpy(&data->buff[data->length], "(null)", data->precision);
-			data->length += 6 - data->precision;
-		}
-		while (data->width-- - data->precision > 0)
-			data->buff[data->length++] = 32;
-		if (!(data->flag & MINUS))
-		{
-			if (!data->precision)
-				ft_strcpy(&data->buff[data->length], "(null)");
-			else
-				ft_strncpy(&data->buff[data->length], "(null)", data->precision);
-			data->length += 6 - data->precision;
-		}
-		return ;
-	}
-	if (data->flag & MINUS && *str != '\0')
-	{
-		if (!data->precision)
+		if (!data->precision || (t_ll)ft_strlen(str) < (t_ll)data->precision)
 			ft_strcpy(&data->buff[data->length], str);
 		else
-			ft_strncpy(&data->buff[data->length], str, data->precision);
-		data->length += ft_strlen(str) - data->precision;
+			str = ft_strncpy(&data->buff[data->length], str, data->precision);
+		data->length += ft_strlen(str);
 	}
-	while (data->width-- - (long long)ft_strlen(str) + ((*str != '\0') ?
-												data->precision : 0) > 0)
-		data->buff[data->length++] = 32;
-	if (!(data->flag & MINUS) && *str != '\0')
+	string_spaces(data, str);
+	if (!(data->flag & MINUS) && *str != '\0' && data->precision != -1)
 	{
-		if (!data->precision)
+		if (!data->precision || (t_ll)ft_strlen(str) < (t_ll)data->precision)
 			ft_strcpy(&data->buff[data->length], str);
 		else
-			ft_strncpy(&data->buff[data->length], str, data->precision);
-		data->length += ft_strlen(str) - data->precision;
+			str = ft_strncpy(&data->buff[data->length], str, data->precision);
+		data->length += ft_strlen(str);
 	}
 }
 
@@ -83,47 +77,6 @@ void			handle_chars(t_printf *data)
 		data->buff[data->length++] = 32;
 	if (!(data->flag & MINUS))
 		data->buff[data->length++] = (char)va_arg(data->ap, int);
-}
-
-void			handle_integers(t_printf *data)
-{
-	t_ll	n;
-	int		is_bhex;
-	int		is_sharp;
-	int		is_fignya;
-	int		prcn;
-	int		is_unsgn;
-
-	get_integer(data, &n);
-	prcn = data->precision;
-	is_bhex = (data->type == BIG_HEX) ? 1 : 0;
-	is_unsgn = (data->type == UNSIGNED) ? 5 : 0;
-	is_sharp = (data->flag & SHARP) ? 1 : 0;
-	is_fignya = (!n && data->precision == -1) ? 1 : 0;
-	handle_overflow_buffer(data, data->width +
-	ft_numlen(n, data->type - is_bhex) + (((data->flag & PLUS && n >= 0) ||
-	(data->flag & SHARP && data->type & OCTAL)) ? 1 : 0) + ((data->type & HEX)
-	|| (data->type & BIG_HEX) ? 2 : 0));
-	if (is_fignya && data->type & OCTAL && data->flag & SHARP)
-		data->buff[data->length++] = '0';
-	if ((data->flag & MINUS || (data->flag & ZERO && data->flag & SHARP)) && !is_fignya)
-	{
-		while (prcn-- > (t_ll)ft_numlen(n, data->type - is_bhex - is_unsgn))
-			data->buff[data->length++] = '0';
-		itoa_base_buff(n, data->type, data);
-	}
-	prcn = (data->precision < (t_ll)ft_numlen(n, data->type - is_bhex - is_unsgn)) ?
-			(t_ll)ft_numlen(n, data->type - is_bhex - is_unsgn) : data->precision;
-	while ((data->width--) - prcn -
-	((((data->type == HEX) || (data->type == BIG_HEX)) && is_sharp) ? 2 : 0)
-	- ((is_sharp && data->type & OCTAL) ? 1 : 0) + is_fignya - is_bhex - is_unsgn > 0)
-		data->buff[data->length++] = 32 + ((data->flag & ZERO) ? 16 : 0);
-	if (!(data->flag & MINUS) && !is_fignya)
-	{
-		while (prcn-- > (t_ll)ft_numlen(n, data->type - is_bhex))
-			data->buff[data->length++] = '0';
-		itoa_base_buff(n, data->type, data);
-	}
 }
 
 void			push_buffer(t_printf *data)
@@ -140,11 +93,13 @@ void			push_buffer(t_printf *data)
 		if (data->flag & MINUS)
 			data->buff[data->length++] = '%';
 		while (--data->width > 0)
-			data->buff[data->length++] = 32;
+			data->buff[data->length++] = 32 + ((data->flag & ZERO) ? 16 : 0);
 		if (!(data->flag & MINUS))
 			data->buff[data->length++] = '%';
 	}
 	else if (data->type & DECIMAL || data->type & OCTAL
-	|| data->type == HEX || data->type == BIG_HEX || data->type & UNSIGNED)
+	|| data->type == HEX || data->type == BIG_HEX)
 		handle_integers(data);
+	else if (data->type == UNSIGNED)
+		handle_unsigned(data);
 }

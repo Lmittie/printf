@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_options.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmittie <lmittie@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmallist <fmallist@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 19:54:57 by fmallist          #+#    #+#             */
-/*   Updated: 2019/11/04 17:41:03 by lmittie          ###   ########.fr       */
+/*   Updated: 2019/11/13 15:46:37 by fmallist         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,17 @@ void			get_flags(t_printf *data, const char **format)
 			data->flag |= SPACE;
 		*format += 1;
 	}
+	if (data->flag & ZERO && (data->flag & MINUS))
+		data->flag ^= ZERO;
 	if (data->flag & SPACE && data->flag & PLUS)
 		data->flag ^= SPACE;
-	if (data->flag & ZERO && data->flag & MINUS)
-		data->flag ^= ZERO;
 	get_width(data, format);
 }
 
 void			get_width(t_printf *data, const char **format)
 {
-	data->width = ft_atoi(*format);
+	if (**format)
+		data->width = ft_atoi(*format);
 	if (**format == '*')
 	{
 		data->width = va_arg(data->ap, int);
@@ -49,7 +50,7 @@ void			get_width(t_printf *data, const char **format)
 		}
 		*format += 1;
 	}
-	if (ft_isdigit(**format))
+	if (**format && ft_isdigit(**format))
 	{
 		while (ft_isdigit(**format))
 			*format += 1;
@@ -94,7 +95,7 @@ void			get_size(t_printf *data, const char **format)
 		*format += 2;
 }
 
-void			fill_options(t_printf *data, const char **format)
+int			fill_options(t_printf *data, const char **format)
 {
 	get_flags(data, format);
 	get_precision(data, format);
@@ -118,7 +119,8 @@ void			fill_options(t_printf *data, const char **format)
 	else if (**format == 'u')
 		data->type = UNSIGNED;
 	else
-		exit(0);
+		return (0);
 	push_buffer(data);
 	*format += 1;
+	return (1);
 }
