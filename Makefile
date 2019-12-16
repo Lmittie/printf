@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fmallist <fmallist@student.42.fr>          +#+  +:+       +#+         #
+#    By: lmittie <lmittie@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/26 16:06:00 by fmallist          #+#    #+#              #
-#    Updated: 2019/11/12 21:55:55 by fmallist         ###   ########.fr        #
+#    Updated: 2019/12/16 19:45:59 by lmittie          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
 LIBFTA = libft.a
 SRCS = buffer_mgmt.c ft_printf.c fill_options.c itoa_base_buff.c handle_overflow_buffer.c get_integer.c handle_integers.c \
-		itoa_base_extra_funcs.c itoa_base_buff_u.c handle_unsigned.c get_unsigned.c
+		itoa_base_extra_funcs.c itoa_base_buff_u.c handle_unsigned.c get_unsigned.c ftoa.c ftoa_base_buff.c
 OBJ = $(SRCS:.c=.o)
 LIBDIR = libft/
 LIBNAME = libft/libft.a
@@ -25,7 +25,8 @@ $(NAME): $(OBJ)
 	@make -C $(LIBDIR)
 	@cp libft/libft.a ./$(NAME)
 	@ar rc $(NAME) $(OBJ)
-%.o: %.c
+
+$(OBJ): %.o: %.c
 	@gcc $(CFLAGS) -c $< -o $@
 
 clean:

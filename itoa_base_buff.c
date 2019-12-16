@@ -78,7 +78,7 @@ void				itoa_base_buff(t_ll value, unsigned base, t_printf *data)
 	size_t		len;
 	t_ll		val;
 
-	value = new_value(value, &base, &val, data);
+	value = new_value(value, &base, &val);
 	len = ft_numlen(value, base);
 	if (check_flags(data, value, base))
 		return ;

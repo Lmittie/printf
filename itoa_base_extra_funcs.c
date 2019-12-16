@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   itoa_base_extra_funcs.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmittie <lmittie@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fmallist <fmallist@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:16:05 by lmittie           #+#    #+#             */
-/*   Updated: 2019/11/13 16:26:51 by lmittie          ###   ########.fr       */
+/*   Updated: 2019/11/13 16:30:23 by fmallist         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,12 @@ char			result(t_ll value, unsigned base, t_printf *data)
 	return (ch);
 }
 
-t_ll			new_value(t_ll value, unsigned *base, t_ll *val, t_printf *data)
+t_ll			new_value(t_ll value, unsigned *base, t_ll *val)
 {
 	if (*base == BIG_HEX)
 		*base = 16;
+	if (*base == UNSIGNED)
+		*base = 10;
 	*val = value;
 	return (value);
 }

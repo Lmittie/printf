@@ -6,7 +6,7 @@
 /*   By: fmallist <fmallist@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 21:03:31 by lmittie           #+#    #+#             */
-/*   Updated: 2019/11/12 19:00:10 by fmallist         ###   ########.fr       */
+/*   Updated: 2019/11/18 19:20:05 by fmallist         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ static void		delete_zero_flag(t_printf *data, t_ll n)
 {
 	if (data->type & DECIMAL
 	&& data->precision != 0 && data->flag & ZERO &&
-	((data->precision > (t_ll)ft_numlen(n, 10)) || (data->width > (t_ll)ft_numlen(n, 10) && data->precision < (t_ll)ft_numlen(n, 10))))
+	((data->precision > (t_ll)ft_numlen(n, 10)) || (data->width > (t_ll)ft_numlen(n, 10) && data->precision <
+		(t_ll)ft_numlen(n, 10))))
 		data->flag ^= ZERO;
 	if (data->type & UNSIGNED && data->precision != 0 && data->flag & ZERO)
 		data->flag ^= ZERO;
@@ -139,8 +140,6 @@ void			handle_integers(t_printf *data)
 	if (!(data->flag & MINUS) && data->flag & SHARP && (data->type == HEX || data->type == BIG_HEX) && n
 	&& data->precision > (t_ll)ft_numlen(n, data->type - is_bhex - is_unsgn))
 		width -= 2;
-	//printf("wid::%lld\n", width);
-	//printf("prc::%lld\n", prcn);
 	while (width-- - prcn -
 	((((data->type == HEX) || (data->type == BIG_HEX)) && is_sharp && n
 	&& data->precision < (t_ll)ft_numlen(n, data->type - is_bhex - is_unsgn)) ? 2 : 0)

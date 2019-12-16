@@ -58,8 +58,8 @@ void			handle_unsigned(t_printf *data)
 	ft_numlen_u(n) + (data->flag & PLUS));
 	if (data->flag & MINUS && !excpn)
 		if_minus_flag(data, n);
-	prcn = (data->precision < (t_ll)ft_numlen_u(n)) ?
-			(t_ll)ft_numlen_u(n) : data->precision;
+	prcn = (int)((data->precision < (t_ll)ft_numlen_u(n)) ?
+			(t_ll)ft_numlen_u(n) : data->precision);
 	while (width-- - prcn + excpn > 0)
 		data->buff[data->length++] = 32 + ((data->flag & ZERO) ? 16 : 0);
 	if (!(data->flag & MINUS) && !excpn)

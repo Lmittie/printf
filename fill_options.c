@@ -6,7 +6,7 @@
 /*   By: fmallist <fmallist@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 19:54:57 by fmallist          #+#    #+#             */
-/*   Updated: 2019/11/13 15:46:37 by fmallist         ###   ########.fr       */
+/*   Updated: 2019/11/18 19:17:05 by fmallist         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ int			fill_options(t_printf *data, const char **format)
 		data->type = BIG_HEX;
 	else if (**format == 'u')
 		data->type = UNSIGNED;
+	else if (**format == 'f')
+		data->type = FL;
 	else
 		return (0);
 	push_buffer(data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buffer_mgmt.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmallist <fmallist@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmittie <lmittie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 15:30:35 by fmallist          #+#    #+#             */
-/*   Updated: 2019/11/12 21:39:52 by fmallist         ###   ########.fr       */
+/*   Updated: 2019/11/26 13:53:37 by lmittie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,4 +102,6 @@ void			push_buffer(t_printf *data)
 		handle_integers(data);
 	else if (data->type == UNSIGNED)
 		handle_unsigned(data);
+	else if (data->type == FL)
+		handle_floats(data);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmallist <fmallist@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmittie <lmittie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 19:00:04 by fmallist          #+#    #+#             */
-/*   Updated: 2019/11/13 15:47:00 by fmallist         ###   ########.fr       */
+/*   Updated: 2019/12/16 19:51:59 by lmittie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,44 @@
 # define UNSIGNED			(1 << 7)
 # define HEX				16
 # define BIG_HEX			17
+# define FL					(1 << 8)
 
 # define MAX_LENGTH			4096
 
+# define BASE				1000000000
+
 typedef long long			t_ll;
 typedef unsigned long long	t_ull;
+
+typedef struct	s_num
+{
+	unsigned int arr[100];
+	unsigned size_num;
+}				t_num;
+
+typedef struct	s_arr
+{
+	char buff[5000];
+	size_t length;
+}				t_arr;
+
+typedef struct	s_float
+{
+	t_num			decimal;
+	t_num			fractional;
+	double			num;
+	unsigned int	mantissa;
+	int				exp;
+}				t_float;
+
+typedef struct	s_ldbl
+{
+	t_num			decimal;
+	t_num			fractional;
+	long double		num;
+	unsigned int	mantissa;
+	unsigned int	exp;
+}				t_ldbl;
 
 typedef struct	s_printf
 {
@@ -60,7 +93,7 @@ typedef struct	s_printf
 	t_ll		width;
 	int			precision;
 	uint16_t	size;
-	uint32_t	type;
+	uint64_t	type;
 	size_t		length;
 	char		buff[MAX_LENGTH + 1];
 	va_list		ap;
@@ -83,11 +116,19 @@ void			itoa_base_buff(t_ll value, unsigned base, t_printf *data);
 char			neg_value(t_ll value, unsigned base, t_printf *data);
 char			pos_value(t_ll value, unsigned base, t_printf *data);
 char			result(t_ll value, unsigned base, t_printf *data);
-t_ll			new_value(t_ll value, unsigned *base, t_ll *val, t_printf *data);
+t_ll			new_value(t_ll value, unsigned *base, t_ll *val);
 
 void			itoa_base_buff_u(t_ull value, t_printf *data);
 void			get_unsigned(t_printf *data, t_ull *n);
 size_t			ft_numlen_u(t_ull val);
 void			handle_unsigned(t_printf *data);
+void			handle_floats(t_printf *data);
+
+void			add_long_short(t_num *a, unsigned b);
+void			multiply_long_short(t_num *a, unsigned b);
+void			add_long_long(t_num *a, t_num b);
+t_num			big_power_of_five(unsigned power);
+
+void			ftoa_base_buff(unsigned int value, t_arr *arr);
 
 #endif
