@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   itoa_base_buff_u.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmallist <fmallist@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmittie <lmittie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/23 12:26:07 by exam              #+#    #+#             */
-/*   Updated: 2019/11/13 15:24:10 by fmallist         ###   ########.fr       */
+/*   Created: 2019/08/23 12:26:07 by lmittie           #+#    #+#             */
+/*   Updated: 2019/12/21 20:26:46 by lmittie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t		ft_numlen_u(t_ull val)
+size_t				ft_numlen_u(t_ull val)
 {
 	size_t len;
 

@@ -6,14 +6,16 @@
 #    By: lmittie <lmittie@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/26 16:06:00 by fmallist          #+#    #+#              #
-#    Updated: 2019/12/16 19:45:59 by lmittie          ###   ########.fr        #
+#    Updated: 2019/12/21 20:23:41 by lmittie          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
 LIBFTA = libft.a
 SRCS = buffer_mgmt.c ft_printf.c fill_options.c itoa_base_buff.c handle_overflow_buffer.c get_integer.c handle_integers.c \
-		itoa_base_extra_funcs.c itoa_base_buff_u.c handle_unsigned.c get_unsigned.c ftoa.c ftoa_base_buff.c
+		itoa_base_extra_funcs.c itoa_base_buff_u.c handle_unsigned.c get_unsigned.c ftoa.c ftoa_base_buff.c \
+		printing_floats.c long_arithmetics.c printing_ldbls.c handle_octals.c handle_hexdecimals.c handle_bighex.c \
+		get_specifiers.c
 OBJ = $(SRCS:.c=.o)
 LIBDIR = libft/
 LIBNAME = libft/libft.a

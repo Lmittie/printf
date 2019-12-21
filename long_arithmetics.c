@@ -6,7 +6,7 @@
 /*   By: lmittie <lmittie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/29 17:14:34 by fmallist          #+#    #+#             */
-/*   Updated: 2019/12/16 14:28:34 by lmittie          ###   ########.fr       */
+/*   Updated: 2019/12/21 20:30:09 by lmittie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ void		add_long_short(t_num *a, unsigned b)
 
 void		multiply_long_short(t_num *a, unsigned b)
 {
-	unsigned	i;
-	unsigned long		tmp;
-	unsigned	temp;
-	unsigned long		res;
+	unsigned		i;
+	unsigned long	tmp;
+	unsigned		temp;
+	unsigned long	res;
 
 	i = 0;
 	tmp = 0;

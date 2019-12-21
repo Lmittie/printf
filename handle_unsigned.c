@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   handle_unsigned.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmallist <fmallist@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmittie <lmittie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 21:03:31 by lmittie           #+#    #+#             */
-/*   Updated: 2019/11/13 15:40:05 by fmallist         ###   ########.fr       */
+/*   Updated: 2019/12/21 20:26:32 by lmittie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void		delete_zero_flag(t_printf *data)
+static void			delete_zero_flag(t_printf *data)
 {
 	if (data->precision != 0 && data->flag & ZERO)
 		data->flag ^= ZERO;
@@ -24,7 +24,7 @@ static void			if_minus_flag(t_printf *data, t_ull n)
 
 	prcn = data->precision;
 	if (data->flag & MINUS && !n && data->precision == -1 && data->flag & PLUS)
-			data->buff[data->length++] = '+';
+		data->buff[data->length++] = '+';
 	while (prcn-- > (t_ll)ft_numlen_u(n))
 		data->buff[data->length++] = '0';
 	itoa_base_buff_u(n, data);
@@ -43,7 +43,7 @@ static void			if_not_minus_flag(t_printf *data, t_ull n)
 		data->buff[data->length++] = '+';
 }
 
-void			handle_unsigned(t_printf *data)
+void				handle_unsigned(t_printf *data)
 {
 	t_ull	n;
 	int		excpn;

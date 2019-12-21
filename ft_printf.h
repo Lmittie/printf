@@ -6,7 +6,7 @@
 /*   By: lmittie <lmittie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 19:00:04 by fmallist          #+#    #+#             */
-/*   Updated: 2019/12/16 19:51:59 by lmittie          ###   ########.fr       */
+/*   Updated: 2019/12/21 20:21:25 by lmittie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 # include "libft/libft.h"
 # include <stdarg.h>
 # include <stdio.h>
-
-# define ABS(x) (x < 0) ? -x : x
 
 /*-----------FLAGS---------------*/
 
@@ -76,6 +74,7 @@ typedef struct	s_float
 	double			num;
 	unsigned int	mantissa;
 	int				exp;
+	char			sign;
 }				t_float;
 
 typedef struct	s_ldbl
@@ -84,7 +83,8 @@ typedef struct	s_ldbl
 	t_num			fractional;
 	long double		num;
 	unsigned int	mantissa;
-	unsigned int	exp;
+	int				exp;
+	char			sign;
 }				t_ldbl;
 
 typedef struct	s_printf
@@ -123,6 +123,9 @@ void			get_unsigned(t_printf *data, t_ull *n);
 size_t			ft_numlen_u(t_ull val);
 void			handle_unsigned(t_printf *data);
 void			handle_floats(t_printf *data);
+void			handle_octals(t_printf *data);
+void			handle_hexdecimals(t_printf *data);
+void			handle_bighex(t_printf *data);
 
 void			add_long_short(t_num *a, unsigned b);
 void			multiply_long_short(t_num *a, unsigned b);
@@ -130,5 +133,11 @@ void			add_long_long(t_num *a, t_num b);
 t_num			big_power_of_five(unsigned power);
 
 void			ftoa_base_buff(unsigned int value, t_arr *arr);
+void			print_float(t_arr *dec, t_arr *frac, t_printf *data, int i);
+void			before_print_float(t_float number, t_printf *data);
+int				count_zeros(t_float *n);
+int				handle_f_prec(t_arr *arr, t_arr *dec, t_printf *data);
+int				handle_f_dec(t_arr *arr, char num, char flag);
+void			before_print_ldbl(t_ldbl number, t_printf *data);
 
 #endif
