@@ -17,6 +17,7 @@
 # include "libft/libft.h"
 # include <stdarg.h>
 # include <stdio.h>
+# include <stdint.h>
 
 /*-----------FLAGS---------------*/
 
@@ -51,6 +52,8 @@
 # define MAX_LENGTH			4096
 
 # define BASE				1000000000
+
+# define VAR(x, y)			x y
 
 typedef long long			t_ll;
 typedef unsigned long long	t_ull;
@@ -126,6 +129,9 @@ void			handle_floats(t_printf *data);
 void			handle_octals(t_printf *data);
 void			handle_hexdecimals(t_printf *data);
 void			handle_bighex(t_printf *data);
+void			handle_chars(t_printf *data);
+void			handle_strings(t_printf *data);
+void			handle_pointers(t_printf *data);
 
 void			add_long_short(t_num *a, unsigned b);
 void			multiply_long_short(t_num *a, unsigned b);

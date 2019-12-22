@@ -62,18 +62,21 @@ void			get_precision(t_printf *data, const char **format)
 	if (**format == '.')
 	{
 		*format += 1;
-		data->precision = ft_atoi(*format);
-		if (**format == '0' && data->precision == 0)
-			data->precision = -1;
-		if (ft_isalpha(**format) && data->precision == 0)
-			data->precision = -1;
-		while (ft_isdigit(**format))
+		if (**format == '*')
+		{
+			data->precision = va_arg(data->ap, int);
 			*format += 1;
-	}
-	else if (**format == '*')
-	{
-		data->precision = va_arg(data->ap, int);
-		*format += 1;
+		}
+		else
+		{
+			data->precision = ft_atoi(*format);
+			if (**format == '0' && data->precision == 0)
+				data->precision = -1;
+			if (ft_isalpha(**format) && data->precision == 0)
+				data->precision = -1;
+			while (ft_isdigit(**format))
+				*format += 1;
+		}
 	}
 }
 
@@ -85,7 +88,7 @@ void			get_size(t_printf *data, const char **format)
 		data->size = LL;
 	else if (**format == 'h')
 		data->size = H;
-	else if (**format == 'l')
+	else if (**format == 'l' || **format == 'z')
 		data->size = L;
 	else if (**format == 'L')
 		data->size = BIGL;

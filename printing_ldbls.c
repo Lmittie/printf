@@ -28,12 +28,12 @@ void		before_print_ldbl(t_ldbl number, t_printf *data)
 	int				j;
 	int				prec;
 	unsigned int	base;
-	t_arr			dec;
-	t_arr			frac;
 
 	j = 0;
 	i = 0;
 	i = number.decimal.size_num - 1;
+	VAR(t_arr, dec);
+	VAR(t_arr, frac);
 	ft_bzero(&dec, sizeof(t_arr));
 	ft_bzero(&frac, sizeof(t_arr));
 	if (number.sign)

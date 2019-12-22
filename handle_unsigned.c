@@ -49,17 +49,18 @@ void				handle_unsigned(t_printf *data)
 	int		excpn;
 	int		prcn;
 	t_ll	width;
+	t_ll	len;
 
 	get_unsigned(data, &n);
+	len = (t_ll)ft_numlen_u(n);
 	width = data->width;
 	excpn = (!n && data->precision == -1) ? 1 : 0;
 	delete_zero_flag(data);
 	handle_overflow_buffer(data, data->width +
-	ft_numlen_u(n) + (data->flag & PLUS));
+	len + (data->flag & PLUS));
 	if (data->flag & MINUS && !excpn)
 		if_minus_flag(data, n);
-	prcn = (int)((data->precision < (t_ll)ft_numlen_u(n)) ?
-			(t_ll)ft_numlen_u(n) : data->precision);
+	prcn = (int)((data->precision < len) ? len : data->precision);
 	while (width-- - prcn + excpn > 0)
 		data->buff[data->length++] = 32 + ((data->flag & ZERO) ? 16 : 0);
 	if (!(data->flag & MINUS) && !excpn)
