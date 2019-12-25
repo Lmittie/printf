@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_bighex.c                                    :+:      :+:    :+:   */
+/*   handle_ubighex.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lmittie <lmittie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/21 18:32:02 by lmittie           #+#    #+#             */
-/*   Updated: 2019/12/23 14:55:52 by lmittie          ###   ########.fr       */
+/*   Created: 2019/12/24 14:51:12 by lmittie           #+#    #+#             */
+/*   Updated: 2019/12/24 18:06:55 by lmittie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void		if_minus_flag(t_printf *data, t_ll n, t_ll *width, int *sharp)
+static void		if_minus_flag(t_printf *data, t_ull n, t_ll *width, int *sharp)
 {
 	int prcn;
 
 	prcn = data->precision;
-	handle_overflow_buffer(data, ft_numlen(n, 16) +
+	handle_overflow_buffer(data, ft_unumlen(n, 16) +
 	(data->flag & PLUS ? 1 : 0));
 	if (data->flag & MINUS && !n && data->precision == -1 && data->flag & PLUS)
 		data->buff[data->length++] = '+';
@@ -33,14 +33,14 @@ static void		if_minus_flag(t_printf *data, t_ll n, t_ll *width, int *sharp)
 			*width -= 2;
 			*sharp = 0;
 		}
-		while (prcn-- > (t_ll)ft_numlen(n, 16)
+		while (prcn-- > (t_ll)ft_unumlen(n, 16)
 		&& handle_overflow_buffer(data, 1))
 			data->buff[data->length++] = '0';
-		itoa_base_buff(n, data->type, data);
+		utoa_base_buff_ox(n, data->type, data);
 	}
 }
 
-static void		if_not_minus_flag(t_printf *data, t_ll n, int *sharp)
+static void		if_not_minus_flag(t_printf *data, t_ull n, int *sharp)
 {
 	int prcn;
 
@@ -55,26 +55,26 @@ static void		if_not_minus_flag(t_printf *data, t_ll n, int *sharp)
 			data->flag ^= SHARP;
 			*sharp = 0;
 		}
-		while (prcn-- > (t_ll)ft_numlen(n, data->type - 1)
+		while (prcn-- > (t_ll)ft_unumlen(n, data->type - 1)
 		&& handle_overflow_buffer(data, 1))
 			data->buff[data->length++] = '0';
-		itoa_base_buff(n, data->type, data);
+		utoa_base_buff_ox(n, data->type, data);
 	}
 	if (!(data->flag & MINUS) && (!n && data->precision == -1)
 	&& data->flag & PLUS && handle_overflow_buffer(data, 1))
 		data->buff[data->length++] = '+';
 }
 
-void			handle_bighex(t_printf *data)
+void			handle_ubighex(t_printf *data)
 {
-	t_ll	n;
+	t_ull	n;
 	int		is_sharp;
 	int		prcn;
 	t_ll	width;
 	t_ll	len;
 
-	get_integer(data, &n);
-	len = (t_ll)ft_numlen(n, 16);
+	get_unsigned(data, &n);
+	len = (t_ll)ft_unumlen(n, 16);
 	width = data->width;
 	is_sharp = (data->flag & SHARP) ? 1 : 0;
 	if (data->precision != 0 && data->flag & ZERO)

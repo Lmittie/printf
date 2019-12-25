@@ -6,7 +6,7 @@
 /*   By: lmittie <lmittie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 19:54:57 by fmallist          #+#    #+#             */
-/*   Updated: 2019/12/21 20:23:17 by lmittie          ###   ########.fr       */
+/*   Updated: 2019/12/25 17:01:42 by lmittie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,19 @@ static int		more_filling(t_printf *data, const char **format)
 		data->type = BIG_HEX;
 	else if (**format == 'u')
 		data->type = UNSIGNED;
+	else if (**format == 'U')
+	{
+		data->type = UNSIGNED;
+		data->size = L;
+	}
 	else if (**format == 'f')
 		data->type = FL;
+	else if (ft_isalpha(**format) && **format != 'j' && **format != 'h'
+	&& **format != 'l' && **format != 'L' && **format != 'z')
+	{
+		data->type = UNDEF;
+		data->undef[0] = **format;
+	}
 	else
 		return (0);
 	return (1);
@@ -32,8 +43,10 @@ static int		more_filling(t_printf *data, const char **format)
 int				fill_options(t_printf *data, const char **format)
 {
 	get_flags(data, format);
+	get_width(data, format);
 	get_precision(data, format);
-	get_size(data, format);
+	if (!get_size(data, format))
+		return (0);
 	if (**format == '%')
 		data->type = PERCENT;
 	else if (**format == 'c')

@@ -6,7 +6,7 @@
 /*   By: lmittie <lmittie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 12:26:07 by lmittie           #+#    #+#             */
-/*   Updated: 2019/12/21 15:23:15 by lmittie          ###   ########.fr       */
+/*   Updated: 2019/12/24 18:06:39 by lmittie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void			replace_space(int pos, t_printf *data, t_ll val)
 
 static int			check_flags(t_printf *data, t_ll value, unsigned base)
 {
+	handle_overflow_buffer(data, ft_numlen(value, base) + 1);
 	if (base == 10 && value < 0 &&
 	data->precision > (t_ll)ft_numlen(value, base))
 		data->buff[data->length++] = '0';
@@ -73,6 +74,13 @@ static void			replace_zero(int pos, t_printf *data, t_ll val)
 	}
 }
 
+void				push_ten(t_printf *data, size_t *len, unsigned base)
+{
+	data->buff[data->length + (*len)-- - 1] = '0';
+	data->buff[data->length + (*len)-- - 1] = '1';
+	*len = (base == 10) ? *len + 1 : *len;
+}
+
 void				itoa_base_buff(t_ll value, unsigned base, t_printf *data)
 {
 	size_t		len;
@@ -88,10 +96,7 @@ void				itoa_base_buff(t_ll value, unsigned base, t_printf *data)
 		value = value / base;
 	}
 	if (value == base || value == -(int)base)
-	{
-		data->buff[data->length + len-- - 1] = '0';
-		data->buff[data->length + len-- - 1] = '1';
-	}
+		push_ten(data, &len, base);
 	else
 		data->buff[data->length + len - 1] = result(value, base, data);
 	if ((data->flag & ZERO || data->precision >

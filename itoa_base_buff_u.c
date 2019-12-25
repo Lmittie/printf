@@ -6,7 +6,7 @@
 /*   By: lmittie <lmittie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 12:26:07 by lmittie           #+#    #+#             */
-/*   Updated: 2019/12/21 20:26:46 by lmittie          ###   ########.fr       */
+/*   Updated: 2019/12/23 15:09:00 by lmittie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static void			replace_space_u(int pos, t_printf *data, t_ll val)
 
 static int			check_flags_u(t_printf *data, t_ull value)
 {
+	handle_overflow_buffer(data, ft_numlen_u(value) + 1);
 	if ((data->flag & PLUS))
 		data->buff[data->length++] = '+';
 	else if ((data->flag & SPACE) && data->precision != -1)

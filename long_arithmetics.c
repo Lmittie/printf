@@ -6,7 +6,7 @@
 /*   By: lmittie <lmittie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/29 17:14:34 by fmallist          #+#    #+#             */
-/*   Updated: 2019/12/21 20:30:09 by lmittie          ###   ########.fr       */
+/*   Updated: 2019/12/23 17:15:09 by lmittie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,20 @@ void		add_long_long(t_num *a, t_num b)
 	a->size_num = (tmp == 0) ? size : size + 1;
 }
 
+static void	big_power_of_five_extra(unsigned *power, t_num *n)
+{
+	if (*power >= 10)
+	{
+		multiply_long_short(n, g_arr[9]);
+		*power -= 10;
+	}
+	else
+	{
+		multiply_long_short(n, g_arr[*power - 1]);
+		*power -= *power;
+	}
+}
+
 t_num		big_power_of_five(unsigned power)
 {
 	t_num		n;
@@ -103,17 +117,6 @@ t_num		big_power_of_five(unsigned power)
 		return (n);
 	}
 	while (power > 0)
-	{
-		if (power >= 10)
-		{
-			multiply_long_short(&n, g_arr[9]);
-			power -= 10;
-		}
-		else
-		{
-			multiply_long_short(&n, g_arr[power - 1]);
-			power -= power;
-		}
-	}
+		big_power_of_five_extra(&power, &n);
 	return (n);
 }

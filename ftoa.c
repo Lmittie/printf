@@ -6,7 +6,7 @@
 /*   By: lmittie <lmittie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 19:15:28 by fmallist          #+#    #+#             */
-/*   Updated: 2019/12/21 20:27:54 by lmittie          ###   ########.fr       */
+/*   Updated: 2019/12/23 16:09:54 by lmittie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,16 @@ int				count_zeros(t_float *n)
 		return (0);
 	last = ft_numlen_u(n->fractional.arr[n->fractional.size_num - 1]);
 	return (52 - n->exp - 9 * (n->fractional.size_num - 1) - last);
+}
+
+int				count_zeros_ldbl(t_ldbl *n)
+{
+	unsigned last;
+
+	if (n->fractional.size_num == 0)
+		return (0);
+	last = ft_numlen_u(n->fractional.arr[n->fractional.size_num - 1]);
+	return (63 - n->exp - 9 * (n->fractional.size_num - 1) - last);
 }
 
 static void		add_one(t_arr *arr, char *flag, size_t len)

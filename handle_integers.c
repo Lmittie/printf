@@ -6,7 +6,7 @@
 /*   By: lmittie <lmittie@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 21:03:31 by lmittie           #+#    #+#             */
-/*   Updated: 2019/12/21 20:25:04 by lmittie          ###   ########.fr       */
+/*   Updated: 2019/12/23 15:04:04 by lmittie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,14 @@ static void		if_minus_flag(t_printf *data, t_ll n)
 	int prcn;
 
 	prcn = data->precision;
-	if (data->flag & MINUS && !n && data->precision == -1 && data->flag & PLUS)
+	if (data->flag & MINUS && !n && data->precision == -1 && data->flag & PLUS
+	&& handle_overflow_buffer(data, 1))
 		data->buff[data->length++] = '+';
 	if ((data->flag & MINUS || (data->flag & ZERO && data->flag & SHARP)) &&
 	!(!n && data->precision == -1))
 	{
-		while (prcn-- > (t_ll)ft_numlen(n, 10))
+		while (prcn-- > (t_ll)ft_numlen(n, 10)
+		&& handle_overflow_buffer(data, 1))
 			data->buff[data->length++] = '0';
 		itoa_base_buff(n, data->type, data);
 	}
@@ -46,12 +48,13 @@ static void		if_not_minus_flag(t_printf *data, t_ll n)
 	prcn = data->precision;
 	if (!(data->flag & MINUS) && !(!n && data->precision == -1))
 	{
-		while (prcn-- > (t_ll)ft_numlen(n, data->type))
+		while (prcn-- > (t_ll)ft_numlen(n, 10)
+		&& handle_overflow_buffer(data, 1))
 			data->buff[data->length++] = '0';
 		itoa_base_buff(n, data->type, data);
 	}
 	if (!(data->flag & MINUS) && (!n && data->precision == -1)
-	&& data->flag & PLUS)
+	&& data->flag & PLUS && handle_overflow_buffer(data, 1))
 		data->buff[data->length++] = '+';
 }
 
@@ -68,16 +71,13 @@ void			handle_integers(t_printf *data)
 	width = data->width;
 	excpn = (!n && data->precision == -1) ? 1 : 0;
 	delete_zero_flag(data, n);
-	// handle_overflow_buffer(data, data->width +
-	// ft_numlen(n, data->type - is_bhex - is_unsgn) + (((data->flag & PLUS && n >= 0) ||
-	// (data->flag & SHARP && data->type & OCTAL)) ? 1 : 0) + ((data->type & HEX)
-	// || (data->type & BIG_HEX) ? 2 : 0));
 	if_minus_flag(data, n);
 	prcn = (data->precision < len) ? len : data->precision;
 	if (prcn == data->precision && n < 0 && data->precision > len)
 		prcn++;
 	while (width-- - prcn + excpn
-	- (((data->flag & PLUS || data->flag & SPACE) && n >= 0) ? 1 : 0) > 0)
+	- (((data->flag & PLUS || data->flag & SPACE) && n >= 0) ? 1 : 0) > 0
+	&& handle_overflow_buffer(data, 1))
 		data->buff[data->length++] = 32 + ((data->flag & ZERO) ? 16 : 0);
 	if_not_minus_flag(data, n);
 }
